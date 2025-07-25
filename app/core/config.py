@@ -7,6 +7,10 @@ class Settings(BaseSettings):
     algorithm: str
     access_token_expire_minutes: int
     refresh_token_expire_days: int
+    smtp_host: str
+    smtp_port: int
+    smtp_username: str
+    smtp_password: str
 
     @property
     def access_token_expiration(self) -> timedelta:

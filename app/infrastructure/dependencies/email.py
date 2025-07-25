@@ -1,6 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.domain.repositories.email_repository import EmailRepository
 from app.domain.services.email_service import EmailService
 from app.infrastructure.database.session import get_async_db
@@ -10,10 +11,10 @@ from app.interfaces.repositories import EmailRepositoryImpl
 
 async def get_email_service() -> EmailService:
     return EmailServiceImpl(
-        smtp_host="smtp.gmail.com",
-        smtp_port=587,
-        username="zzsz94511@gmail.com",
-        password="efkiwqzpxjbaxzpm"
+        smtp_host=settings.smtp_host,
+        smtp_port=settings.smtp_port,
+        username=settings.smtp_username,
+        password=settings.smtp_password
     )
 
 async def get_email_repository(

@@ -17,3 +17,6 @@ class AuthService(ABC):
     @abstractmethod
     async def verify_access_token(self, token: str) -> UUID:
         pass
+
+    async def get_current_user(self, param) -> User:
+        pass
