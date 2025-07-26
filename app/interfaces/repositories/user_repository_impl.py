@@ -51,9 +51,12 @@ class UserRepositoryImpl(UserRepository):
                 detail="User not found"
             )
 
-        user_db.email = user_data.email
-        user_db.username = user_data.username
-        user_db.surname = user_data.surname
+        if user_data.email is not None:
+            user_db.email = user_data.email
+        if user_data.username is not None:
+            user_db.username = user_data.username
+        if user_data.surname is not None:
+            user_db.surname = user_data.surname
 
         self.db.add(user_db)
         await self.db.commit()

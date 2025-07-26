@@ -1,7 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 
 class EditUserRequest(BaseModel):
-    username: str
-    surname: str
-    email: str
+    username: Optional[str] = None
+    surname: Optional[str] = None
+    email: Optional[str] = None
