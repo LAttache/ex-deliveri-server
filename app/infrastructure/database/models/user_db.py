@@ -17,6 +17,7 @@ class UserDB(Base):
     id: Mapped[UUID] = mapped_column(PG_UUID(as_uuid=True), primary_key=True, default=uuid4)
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False)
+    surname: Mapped[str] = mapped_column(String, nullable=False, default="")
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=func.now(), nullable=False)
     is_email_verified: Mapped[bool] = mapped_column(default=False, nullable=False)

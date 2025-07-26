@@ -1,4 +1,3 @@
-from select import select
 from uuid import UUID
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
@@ -6,10 +5,21 @@ from fastapi import HTTPException, status
 
 from app.core.config import settings
 from app.domain.models.auth import TokenPair
+from app.domain.models.user import User
+from app.domain.repositories.user_repository import UserRepository
 from app.domain.services.auth_service import AuthService
 
-
 class JWTAuthService(AuthService):
+    def __init__(self, user_repository: UserRepository):
+        self.user_repository = user_repository
+
+    async def get_current_user(self, param) -> User:
+        user = await self.user_repository.get_user_by_id(param)
+
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        return user
 
     async def create_token_pair(self, user_id: UUID) -> TokenPair:
         return  TokenPair(

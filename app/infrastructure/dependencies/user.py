@@ -1,29 +1,17 @@
-from uuid import UUID
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials
+from app.domain.repositories.user_repository import UserRepository
+from app.infrastructure.database.session import get_async_db
+from app.infrastructure.services.user_service_impl import UserServiceImpl
+from app.interfaces.repositories.user_repository_impl import UserRepositoryImpl
 
-from app.core.security.tokens import security
-from app.domain.models.user import User
-from app.domain.services.auth_service import AuthService
-from app.infrastructure.dependencies.auth import get_auth_service
+async def get_user_repository(
+        db: AsyncSession = Depends(get_async_db),
+) -> UserRepository:
+    return UserRepositoryImpl(db=db)
 
-
-async def get_current_user(
-        credentials: HTTPAuthorizationCredentials = Depends(security),
-        auth_service: AuthService = Depends(get_auth_service),
-) -> User:
-    token = credentials.credentials
-    try:
-        payload = await auth_service.decode_token(token)
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token",
-        )
-
-    user = await auth_service.get_current_user(UUID(payload["sub"]))
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return user
+async def get_user_service(
+        user_repository: UserRepository = Depends(get_user_repository),
+):
+    return UserServiceImpl(user_repository=user_repository)

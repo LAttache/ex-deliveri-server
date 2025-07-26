@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+*.log
+
+# Venv
+.venv/
+env/
+venv/
+ENV/
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# dotenv
+.env
+.env.*
+
+# Alembic
+alembic.ini
+
+# Migrations cache
+alembic/versions/*.pyc
+alembic/versions/__pycache__/
+
+# MyPy / Pylint / Pyright
+.mypy_cache/
+.pyright/
+.pytest_cache/
+.tox/
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+
+# Test output
+test-results/
+
+# VSCode (если откроется в VSCode)
+.vscode/
