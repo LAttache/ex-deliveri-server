@@ -6,6 +6,7 @@ from fastapi import HTTPException, status
 from app.domain.models.user import User
 from app.domain.services.user_service import UserService
 from app.domain.repositories.user_repository import UserRepository
+from app.interfaces.api.schemas.user.edit_user import EditUserRequest
 
 
 class UserServiceImpl(UserService):
@@ -35,8 +36,8 @@ class UserServiceImpl(UserService):
 
         return user
 
-    async def update_user(self, user: User) -> str:
-        return await self.user_repository.update_user(user)
+    async def update_user(self, user_id: UUID, user: EditUserRequest) -> str:
+        return await self.user_repository.update_user(user_id, user)
 
     async def delete_user(self, user_id: UUID) -> str:
         return await self.user_repository.delete_user(user_id)

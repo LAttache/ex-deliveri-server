@@ -23,3 +23,10 @@ class UserResponse(BaseModel):
             is_email_verified=user.is_email_verified,
             is_blocked=user.is_blocked,
         )
+
+class UpdateUserResponse(BaseModel):
+    data: str
+
+    @classmethod
+    def from_model(cls, data: str) -> "UpdateUserResponse":
+        return cls(data=data)

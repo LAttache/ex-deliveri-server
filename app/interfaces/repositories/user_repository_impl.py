@@ -10,6 +10,7 @@ from app.domain.mappers.user_mapper import map_user_db_to_user
 from app.domain.models.user import User
 from app.domain.repositories.user_repository import UserRepository
 from app.infrastructure.database.models import UserDB
+from app.interfaces.api.schemas.user.edit_user import EditUserRequest
 from app.shared.validators.email_validator import validate_email
 
 
@@ -39,8 +40,8 @@ class UserRepositoryImpl(UserRepository):
 
         return map_user_db_to_user(user_db)
 
-    async def update_user(self, user: User) -> str:
-        stmt = select(UserDB).where(UserDB.id == user.user_id)
+    async def update_user(self, user_id: UUID, user_data: EditUserRequest) -> str:
+        stmt = select(UserDB).where(UserDB.id == user_id)
         result = await self.db.execute(stmt)
         user_db = result.scalar_one_or_none()
 
@@ -50,8 +51,9 @@ class UserRepositoryImpl(UserRepository):
                 detail="User not found"
             )
 
-        user_db.email = user.email
-        user_db.username = user.username
+        user_db.email = user_data.email
+        user_db.username = user_data.username
+        user_db.surname = user_data.surname
 
         self.db.add(user_db)
         await self.db.commit()

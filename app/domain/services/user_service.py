@@ -3,6 +3,7 @@ from typing import Optional, List
 from uuid import UUID
 
 from app.domain.models.user import User
+from app.interfaces.api.schemas.user.edit_user import EditUserRequest
 
 
 class UserService(ABC):
@@ -19,7 +20,7 @@ class UserService(ABC):
         pass
 
     @abstractmethod
-    async def update_user(self, user: User) -> User:
+    async def update_user(self, user_id: UUID, user: EditUserRequest) -> str:
         pass
 
     @abstractmethod
